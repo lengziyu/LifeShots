@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Prisma } from "@prisma/client";
 
 import { AppShell } from "@/components/app-shell";
 import { PhotoCard } from "@/components/photo-card";
@@ -25,14 +24,11 @@ export default async function TimelinePage({ searchParams }: Props) {
   const user = await requireUser();
   const query = await searchParams;
 
-  const where: Prisma.PhotoWhereInput = {
-    userId: user.id,
-  };
-
   const activeCategory = query.category ? parseCategory(query.category) : null;
-  if (activeCategory) {
-    where.category = activeCategory;
-  }
+  const where = {
+    userId: user.id,
+    ...(activeCategory ? { category: activeCategory } : {}),
+  };
 
   const photos = await prisma.photo.findMany({
     where,

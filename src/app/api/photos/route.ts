@@ -1,4 +1,3 @@
-import { Prisma } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 import { getCurrentUser } from "@/lib/auth";
@@ -23,37 +22,32 @@ export async function GET(request: Request) {
   const monthParam = searchParams.get("month");
   const limit = Math.min(Number(searchParams.get("limit") ?? 60), 120);
 
-  const where: Prisma.PhotoWhereInput = {
+  const monthRange =
+    monthParam && /^\d{4}-\d{2}$/.test(monthParam)
+      ? (() => {
+          const [year, month] = monthParam.split("-").map(Number);
+          return {
+            gte: new Date(year, month - 1, 1),
+            lt: new Date(year, month, 1),
+          };
+        })()
+      : null;
+
+  const where = {
     userId: user.id,
+    ...(categoryParam ? { category: parseCategory(categoryParam) } : {}),
+    ...(favoriteParam === "1" ? { isFavorite: true } : {}),
+    ...(tagParam
+      ? {
+          photoTags: {
+            some: {
+              tag: { name: tagParam },
+            },
+          },
+        }
+      : {}),
+    ...(monthRange ? { createdAt: monthRange } : {}),
   };
-
-  if (categoryParam) {
-    where.category = parseCategory(categoryParam);
-  }
-
-  if (favoriteParam === "1") {
-    where.isFavorite = true;
-  }
-
-  if (tagParam) {
-    where.photoTags = {
-      some: {
-        tag: {
-          name: tagParam,
-        },
-      },
-    };
-  }
-
-  if (monthParam && /^\d{4}-\d{2}$/.test(monthParam)) {
-    const [year, month] = monthParam.split("-").map(Number);
-    const start = new Date(year, month - 1, 1);
-    const end = new Date(year, month, 1);
-    where.createdAt = {
-      gte: start,
-      lt: end,
-    };
-  }
 
   const photos = await prisma.photo.findMany({
     where,
