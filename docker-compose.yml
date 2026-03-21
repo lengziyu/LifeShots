@@ -1,0 +1,47 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: lifeshots-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: lifeshots
+      POSTGRES_USER: lifeshots
+      POSTGRES_PASSWORD: lifeshots_password
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lifeshots"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: lifeshots-app
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://lifeshots:lifeshots_password@postgres:5432/lifeshots?schema=public
+      JWT_SECRET: change_me_to_a_long_random_secret
+      STORAGE_ROOT: /app/storage
+    volumes:
+      - ./storage:/app/storage
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: lifeshots-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app
+
+volumes:
+  pgdata:
