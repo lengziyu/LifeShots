@@ -50,7 +50,9 @@ export default async function TimelinePage({ searchParams }: Props) {
         <Link
           href="/"
           className={`shrink-0 rounded-full px-3 py-1.5 text-sm font-semibold ${
-            !activeCategory ? "bg-slate-900 text-white" : "bg-white text-slate-500"
+            !activeCategory
+              ? "bg-[var(--accent-soft)] text-[var(--accent-soft-foreground)] ring-1 ring-[var(--accent-soft-border)]"
+              : "bg-white text-slate-500"
           }`}
         >
           全部
@@ -60,7 +62,9 @@ export default async function TimelinePage({ searchParams }: Props) {
             key={item.value}
             href={`/?category=${item.value}`}
             className={`shrink-0 rounded-full px-3 py-1.5 text-sm font-semibold ${
-              activeCategory === item.value ? "bg-slate-900 text-white" : "bg-white text-slate-500"
+              activeCategory === item.value
+                ? "bg-[var(--accent-soft)] text-[var(--accent-soft-foreground)] ring-1 ring-[var(--accent-soft-border)]"
+                : "bg-white text-slate-500"
             }`}
           >
             {item.label}

@@ -39,7 +39,7 @@ export function PhotoCard({ photo }: PhotoCardProps) {
         {photo.tags.length ? (
           <div className="mt-2 flex flex-wrap gap-1.5">
             {photo.tags.slice(0, 3).map((tag) => (
-              <span key={tag} className="rounded-full bg-amber-100 px-2 py-1 text-xs text-amber-800">
+              <span key={tag} className="rounded-full bg-[var(--tag-bg)] px-2 py-1 text-xs text-[var(--tag-foreground)]">
                 #{tag}
               </span>
             ))}

@@ -69,7 +69,7 @@ export function UploadForm() {
           accept="image/*"
           required
           onChange={(event) => setFile(event.target.files?.[0] ?? null)}
-          className="block w-full text-sm text-slate-500 file:mr-3 file:rounded-xl file:border-0 file:bg-slate-900 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white"
+          className="block w-full text-sm text-slate-500 file:mr-3 file:rounded-xl file:border-0 file:bg-[var(--accent-soft)] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-[var(--accent-soft-foreground)]"
         />
       </div>
 
@@ -120,7 +120,10 @@ export function UploadForm() {
 
       {error ? <p className="text-sm text-rose-600">{error}</p> : null}
 
-      <button disabled={loading} className="h-12 w-full rounded-2xl bg-slate-900 text-sm font-semibold text-white">
+      <button
+        disabled={loading}
+        className="h-12 w-full rounded-2xl bg-[var(--accent)] text-sm font-semibold text-[var(--accent-foreground)]"
+      >
         {loading ? "上传中..." : "上传照片"}
       </button>
     </form>

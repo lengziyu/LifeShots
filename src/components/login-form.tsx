@@ -58,7 +58,9 @@ export function LoginForm() {
         <button
           type="button"
           className={`h-10 rounded-xl text-sm font-semibold ${
-            mode === "login" ? "bg-white text-slate-900 shadow-sm" : "text-slate-500"
+            mode === "login"
+              ? "bg-[var(--accent-soft)] text-[var(--accent-soft-foreground)] shadow-sm ring-1 ring-[var(--accent-soft-border)]"
+              : "text-slate-500"
           }`}
           onClick={() => setMode("login")}
         >
@@ -67,7 +69,9 @@ export function LoginForm() {
         <button
           type="button"
           className={`h-10 rounded-xl text-sm font-semibold ${
-            mode === "register" ? "bg-white text-slate-900 shadow-sm" : "text-slate-500"
+            mode === "register"
+              ? "bg-[var(--accent-soft)] text-[var(--accent-soft-foreground)] shadow-sm ring-1 ring-[var(--accent-soft-border)]"
+              : "text-slate-500"
           }`}
           onClick={() => setMode("register")}
         >
@@ -110,7 +114,7 @@ export function LoginForm() {
 
         <button
           disabled={loading}
-          className="h-12 w-full rounded-2xl bg-slate-900 text-sm font-semibold text-white disabled:opacity-60"
+          className="h-12 w-full rounded-2xl bg-[var(--accent)] text-sm font-semibold text-[var(--accent-foreground)] disabled:opacity-60"
         >
           {loading ? "提交中..." : mode === "login" ? "登录" : "创建账号"}
         </button>

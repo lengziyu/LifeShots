@@ -25,8 +25,22 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#f8f4ef",
+  themeColor: "#f8f5ff",
 };
+
+const themeInitScript = `
+(() => {
+  try {
+    const storageKey = "lifeshots-theme";
+    const allow = ["purple", "sunset", "mint"];
+    const saved = localStorage.getItem(storageKey);
+    const theme = allow.includes(saved || "") ? saved : "purple";
+    document.documentElement.setAttribute("data-theme", theme);
+  } catch {
+    document.documentElement.setAttribute("data-theme", "purple");
+  }
+})();
+`;
 
 export default function RootLayout({
   children,
@@ -34,7 +48,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN">
+    <html lang="zh-CN" data-theme="purple">
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body className="antialiased">
         <PwaRegister />
         {children}

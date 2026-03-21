@@ -148,7 +148,11 @@ export function PhotoDetailEditor({ photo }: Props) {
       {error ? <p className="text-sm text-rose-600">{error}</p> : null}
 
       <div className="grid grid-cols-2 gap-2">
-        <button disabled={loading} onClick={save} className="h-11 rounded-2xl bg-slate-900 text-sm font-semibold text-white">
+        <button
+          disabled={loading}
+          onClick={save}
+          className="h-11 rounded-2xl bg-[var(--accent)] text-sm font-semibold text-[var(--accent-foreground)]"
+        >
           保存
         </button>
         <button

@@ -23,7 +23,7 @@ export function AppShell({ title, subtitle, children, actionHref, actionLabel }:
             {actionHref && actionLabel ? (
               <Link
                 href={actionHref}
-                className="rounded-xl bg-slate-900 px-3 py-2 text-sm font-semibold text-white"
+                className="rounded-xl bg-[var(--accent)] px-3 py-2 text-sm font-semibold text-[var(--accent-foreground)] shadow-sm"
               >
                 {actionLabel}
               </Link>
