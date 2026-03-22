@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
 
+import { clearPendingUpload, pendingUploadToFile, readPendingUpload } from "@/lib/pending-upload";
 import type { Category } from "@/types/photo";
 
 const options: Array<{ value: Category; label: string }> = [
@@ -13,6 +15,8 @@ const options: Array<{ value: Category; label: string }> = [
 
 export function UploadForm() {
   const [file, setFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [fromQuickCapture, setFromQuickCapture] = useState(false);
   const [category, setCategory] = useState<Category>("DAILY");
   const [caption, setCaption] = useState("");
   const [tags, setTags] = useState("");
@@ -20,6 +24,59 @@ export function UploadForm() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const quickSignal = searchParams.get("quick");
+
+  useEffect(() => {
+    let disposed = false;
+    const pending = readPendingUpload();
+    if (!pending) return;
+
+    // Older than 15min => drop it.
+    if (Date.now() - pending.createdAt > 15 * 60 * 1000) {
+      clearPendingUpload();
+      return;
+    }
+
+    pendingUploadToFile(pending)
+      .then((pendingFile) => {
+        if (disposed) return;
+        setFile(pendingFile);
+        setPreviewUrl(pending.dataUrl);
+        setFromQuickCapture(true);
+      })
+      .catch(() => {
+        clearPendingUpload();
+      });
+
+    return () => {
+      disposed = true;
+    };
+  }, [quickSignal]);
+
+  useEffect(() => {
+    return () => {
+      if (previewUrl?.startsWith("blob:")) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
+
+  function handleFilePicked(nextFile: File | null) {
+    setFile(nextFile);
+    setFromQuickCapture(false);
+    clearPendingUpload();
+
+    setPreviewUrl((current) => {
+      if (current?.startsWith("blob:")) {
+        URL.revokeObjectURL(current);
+      }
+      if (!nextFile) {
+        return null;
+      }
+      return URL.createObjectURL(nextFile);
+    });
+  }
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -51,6 +108,7 @@ export function UploadForm() {
         return;
       }
 
+      clearPendingUpload();
       router.replace(`/photos/${data.photo.id}`);
       router.refresh();
     } catch {
@@ -67,10 +125,22 @@ export function UploadForm() {
         <input
           type="file"
           accept="image/*"
-          required
-          onChange={(event) => setFile(event.target.files?.[0] ?? null)}
+          onChange={(event) => handleFilePicked(event.target.files?.[0] ?? null)}
           className="block w-full text-sm text-slate-500 file:mr-3 file:rounded-xl file:border-0 file:bg-[var(--accent-soft)] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-[var(--accent-soft-foreground)]"
         />
+        {fromQuickCapture ? <p className="mt-2 text-xs text-slate-500">已从右下角拍照快捷入口带入图片</p> : null}
+        {previewUrl ? (
+          <div className="mt-3 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
+            <Image
+              src={previewUrl}
+              alt="upload preview"
+              width={1200}
+              height={700}
+              unoptimized
+              className="h-44 w-full object-cover"
+            />
+          </div>
+        ) : null}
       </div>
 
       <div>

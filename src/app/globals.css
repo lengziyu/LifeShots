@@ -90,6 +90,10 @@ body {
   text-size-adjust: 100%;
 }
 
+html {
+  background-color: var(--bg-0);
+}
+
 body {
   color: var(--text-main);
   background:

@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { BottomNav } from "@/components/bottom-nav";
+import { QuickCaptureButton } from "@/components/quick-capture-button";
 
 type AppShellProps = {
   title: string;
@@ -13,8 +14,8 @@ type AppShellProps = {
 
 export function AppShell({ title, subtitle, children, actionHref, actionLabel, backHref }: AppShellProps) {
   return (
-    <div className="min-h-[100svh] pb-[calc(env(safe-area-inset-bottom)+76px)]">
-      <main className="mx-auto flex w-full max-w-xl flex-col px-4 pt-[calc(env(safe-area-inset-top)+8px)] pb-5">
+    <div className="min-h-dvh pb-[calc(env(safe-area-inset-bottom)+44px)]">
+      <main className="mx-auto flex w-full max-w-xl flex-col px-4 pt-[calc(env(safe-area-inset-top)+8px)] pb-3">
         {backHref ? (
           <header className="mb-3 rounded-2xl border border-white/60 bg-white/82 px-2 py-1.5 shadow-sm backdrop-blur-sm">
             <div className="grid grid-cols-[40px_1fr_40px] items-center">
@@ -47,6 +48,7 @@ export function AppShell({ title, subtitle, children, actionHref, actionLabel, b
         )}
         <div className="space-y-4">{children}</div>
       </main>
+      <QuickCaptureButton />
       <BottomNav />
     </div>
   );
