@@ -32,7 +32,7 @@ export default async function CategoryDetailPage({ params }: Props) {
   });
 
   return (
-    <AppShell title={categoryLabel(parsedCategory)} subtitle="分类时间线">
+    <AppShell title={categoryLabel(parsedCategory)} backHref="/categories">
       {!photos.length ? (
         <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500">
           该分类还没有照片。

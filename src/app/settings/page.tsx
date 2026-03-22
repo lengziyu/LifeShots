@@ -6,7 +6,7 @@ export default async function SettingsPage() {
   const user = await requireUser();
 
   return (
-    <AppShell title="设置" subtitle="基础账户配置">
+    <AppShell title="设置" backHref="/me">
       <SettingsForm displayName={user.displayName} email={user.email} />
     </AppShell>
   );

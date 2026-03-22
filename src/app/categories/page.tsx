@@ -33,7 +33,7 @@ export default async function CategoriesPage() {
   const latestMap = new Map(latest.map((item) => [item.category, item]));
 
   return (
-    <AppShell title="分类浏览" subtitle="按主题快速回看照片">
+    <AppShell title="分类管理" backHref="/me">
       <div className="grid grid-cols-1 gap-3">
         {CATEGORY_OPTIONS.map((item) => {
           const cover = latestMap.get(item.value);

@@ -27,7 +27,7 @@ export default async function PhotoDetailPage({ params }: Props) {
   const serialized = serializePhoto(photo);
 
   return (
-    <AppShell title="照片详情" subtitle="支持描述、标签、收藏和删除">
+    <AppShell title="照片详情" backHref="/">
       <div className="relative aspect-[4/5] overflow-hidden rounded-3xl border border-white/50 bg-white shadow-sm">
         <Image
           src={serialized.imageUrl}

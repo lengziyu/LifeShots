@@ -17,7 +17,7 @@ export default async function FavoritesPage() {
   });
 
   return (
-    <AppShell title="收藏" subtitle="你标记过的珍藏照片">
+    <AppShell title="我的收藏" backHref="/me">
       {!photos.length ? (
         <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500">
           还没有收藏照片。

@@ -95,7 +95,8 @@ body {
   background:
     radial-gradient(circle at 0% 0%, color-mix(in oklab, var(--bg-1) 85%, white), transparent 52%),
     radial-gradient(circle at 100% 100%, color-mix(in oklab, var(--bg-2) 82%, white), transparent 50%),
-    linear-gradient(160deg, var(--bg-0) 0%, #f8f9fb 100%);
+    linear-gradient(160deg, var(--bg-0) 0%, var(--bg-2) 100%);
+  background-color: var(--bg-0);
 }
 
 a {

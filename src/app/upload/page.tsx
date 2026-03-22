@@ -6,7 +6,7 @@ export default async function UploadPage() {
   await requireUser();
 
   return (
-    <AppShell title="上传照片" subtitle="记录当下生活">
+    <AppShell title="上传照片" backHref="/">
       <UploadForm />
     </AppShell>
   );
