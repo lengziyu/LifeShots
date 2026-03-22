@@ -12,8 +12,8 @@ type AppShellProps = {
 
 export function AppShell({ title, subtitle, children, actionHref, actionLabel }: AppShellProps) {
   return (
-    <div className="min-h-screen pb-24">
-      <main className="mx-auto flex min-h-screen w-full max-w-xl flex-col px-4 pt-4 pb-6">
+    <div className="min-h-screen pb-[calc(env(safe-area-inset-bottom)+104px)]">
+      <main className="mx-auto flex min-h-screen w-full max-w-xl flex-col px-4 pt-3 pb-6">
         <header className="mb-4 rounded-3xl border border-white/50 bg-white/80 p-4 shadow-sm backdrop-blur-sm">
           <div className="flex items-start justify-between gap-3">
             <div>

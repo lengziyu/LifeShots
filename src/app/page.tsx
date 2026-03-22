@@ -1,15 +1,8 @@
-import Link from "next/link";
-
 import { AppShell } from "@/components/app-shell";
 import { PhotoCard } from "@/components/photo-card";
-import { parseCategory, CATEGORY_OPTIONS } from "@/lib/categories";
 import { photoWithTagsInclude, serializePhoto } from "@/lib/photos";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/require-user";
-
-type Props = {
-  searchParams: Promise<{ category?: string }>;
-};
 
 function formatTimelineDate(iso: string | null) {
   const value = iso ? new Date(iso) : new Date();
@@ -20,18 +13,11 @@ function formatTimelineDate(iso: string | null) {
   }).format(value);
 }
 
-export default async function TimelinePage({ searchParams }: Props) {
+export default async function TimelinePage() {
   const user = await requireUser();
-  const query = await searchParams;
-
-  const activeCategory = query.category ? parseCategory(query.category) : null;
-  const where = {
-    userId: user.id,
-    ...(activeCategory ? { category: activeCategory } : {}),
-  };
 
   const photos = await prisma.photo.findMany({
-    where,
+    where: { userId: user.id },
     include: photoWithTagsInclude,
     orderBy: [{ takenAt: "desc" }, { createdAt: "desc" }],
     take: 100,
@@ -40,38 +26,7 @@ export default async function TimelinePage({ searchParams }: Props) {
   const items = photos.map(serializePhoto);
 
   return (
-    <AppShell
-      title={`${user.displayName} 的时间线`}
-      subtitle="按时间记录你和生活"
-      actionHref="/upload"
-      actionLabel="上传"
-    >
-      <div className="flex gap-2 overflow-x-auto pb-1">
-        <Link
-          href="/"
-          className={`shrink-0 rounded-full px-3 py-1.5 text-sm font-semibold ${
-            !activeCategory
-              ? "bg-[var(--accent-soft)] text-[var(--accent-soft-foreground)] ring-1 ring-[var(--accent-soft-border)]"
-              : "bg-white text-slate-500"
-          }`}
-        >
-          全部
-        </Link>
-        {CATEGORY_OPTIONS.map((item) => (
-          <Link
-            key={item.value}
-            href={`/?category=${item.value}`}
-            className={`shrink-0 rounded-full px-3 py-1.5 text-sm font-semibold ${
-              activeCategory === item.value
-                ? "bg-[var(--accent-soft)] text-[var(--accent-soft-foreground)] ring-1 ring-[var(--accent-soft-border)]"
-                : "bg-white text-slate-500"
-            }`}
-          >
-            {item.label}
-          </Link>
-        ))}
-      </div>
-
+    <AppShell title={`${user.displayName} 的图集`} subtitle="按时间浏览你的照片">
       {!items.length ? (
         <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500">
           暂无照片，去上传第一张吧。
