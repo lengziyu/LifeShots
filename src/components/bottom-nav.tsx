@@ -25,10 +25,10 @@ function UserIcon() {
 
 function UploadIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" className="h-10 w-10" stroke="currentColor" strokeWidth="2.1">
-      <path d="M12 16V7.8M8.8 11 12 7.8 15.2 11" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M5.2 16.4A2.2 2.2 0 0 0 7.4 18h9.2a2.2 2.2 0 0 0 2.2-1.6" strokeLinecap="round" />
-      <circle cx="12" cy="12" r="9.2" />
+    <svg viewBox="0 0 24 24" fill="none" className="h-10 w-10" stroke="currentColor" strokeWidth="2">
+      <path d="M4 9.5a2 2 0 0 1 2-2h2.1l1-1.8A1.6 1.6 0 0 1 10.5 5h3a1.6 1.6 0 0 1 1.4.7l1 1.8H18a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9.5Z" />
+      <circle cx="12" cy="13" r="3.1" />
+      <path d="M19 5v3M17.5 6.5h3" strokeLinecap="round" />
     </svg>
   );
 }
@@ -49,12 +49,11 @@ export function BottomNav() {
             className={clsx(
               "relative flex h-14 items-center justify-center rounded-2xl transition",
               albumActive
-                ? "bg-[var(--accent-soft)] text-[var(--accent-soft-foreground)] ring-1 ring-[var(--accent-soft-border)]"
-                : "text-[color-mix(in_oklab,var(--accent-soft-foreground)_75%,var(--text-main))] hover:bg-[var(--nav-hover)]",
+                ? "text-[var(--accent-soft-foreground)]"
+                : "text-[color-mix(in_oklab,var(--accent-soft-foreground)_65%,var(--text-main))] hover:text-[var(--accent-soft-foreground)]",
             )}
           >
             <AlbumIcon />
-            {albumActive ? <span className="absolute bottom-1.5 h-1.5 w-5 rounded-full bg-[var(--accent-soft-foreground)]" /> : null}
           </Link>
 
           <Link
@@ -74,12 +73,11 @@ export function BottomNav() {
             className={clsx(
               "relative flex h-14 items-center justify-center rounded-2xl transition",
               meActive
-                ? "bg-[var(--accent-soft)] text-[var(--accent-soft-foreground)] ring-1 ring-[var(--accent-soft-border)]"
-                : "text-[color-mix(in_oklab,var(--accent-soft-foreground)_75%,var(--text-main))] hover:bg-[var(--nav-hover)]",
+                ? "text-[var(--accent-soft-foreground)]"
+                : "text-[color-mix(in_oklab,var(--accent-soft-foreground)_65%,var(--text-main))] hover:text-[var(--accent-soft-foreground)]",
             )}
           >
             <UserIcon />
-            {meActive ? <span className="absolute bottom-1.5 h-1.5 w-5 rounded-full bg-[var(--accent-soft-foreground)]" /> : null}
           </Link>
         </div>
       </div>
